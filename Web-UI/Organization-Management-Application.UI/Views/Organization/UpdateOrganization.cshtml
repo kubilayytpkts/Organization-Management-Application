@@ -1,0 +1,30 @@
+﻿@using Organization_Management_Application.UI.Dtos.OrganizationDtos
+@model ResultOrganizationDto
+
+@{
+    ViewData["Title"] = "UpdateOrganization";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<form action="@Url.Action("UpdateProduct","Product")" method="post">
+    <div class="form-group">
+        <label for="ProductName">Organizasyon Adı</label>
+        <input type="hidden" value="@Model.OrganizationId" name="OrganizationId" />
+        <input type="text" class="form-control"  name="OrganizationName" value="@Model.OrganizationName" required />
+    </div>
+
+   <div class="form-group">
+    <label for="CategoryId">Kategori</label>
+    <select class="form-control" id="CategoryId" name="CategoryId" required>
+        @foreach (var organization in ViewBag.Organizations)
+        {
+            <option value="@organization.Value" 
+                @(organization.Value == Model.OrganizationId.ToString() ? "selected" : "")>
+                @organization.Text
+            </option>
+        }
+    </select>
+</div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>

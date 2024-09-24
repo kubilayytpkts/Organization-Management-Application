@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<link href="~/hierarchical-tree-table-view/css/tree-table.css" rel="stylesheet" />
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/hierarchical-tree-table-view/css/tree-table.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <style>
+        html, * {
+            font-family: 'Open Sans';
+            font-size: 16px;
+        }
+
+        .container {
+            margin: 10px auto;
+            max-width: 180%;
+            margin-left: 30px;
+        }
+
+        th, td {
+            padding: 15px;
+            position: relative; /* Butonları sağa kaydırmak için */
+        }
+
+        .tree-table th {
+            text-align: left;
+            font-size: 18px;
+        }
+
+        .action-buttons {
+            position: absolute; /* Konumlandırmayı değiştirdik */
+            right: 10px; /* Sağ kenardan 10px uzaklık */
+            top: 50%; /* Yükseklik ortalaması */
+            transform: translateY(-50%); /* Dikey merkezleme */
+            z-index: 10; /* Diğer elementlerin üstünde olmasını sağlar */
+        }
+
+            .action-buttons button {
+                font-size: 14px;
+                padding: 5px 10px;
+                margin-left: 5px; /* Butonlar arasındaki boşluk */
+                border: none;
+                cursor: pointer;
+                color: white;
+            }
+
+        .edit-btn {
+            background-color: #007bff;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tree-table-wrap">
+            <table class="tree-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Departman Hiyerarşisi</th>
+                    </tr>
+                </thead>
+                <tbody id="table-tree">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        var organizations = @Html.Raw(ViewBag.OrganizationsTree);
+
+        // Hiyerarşiyi tabloya ekleyen fonksiyon
+        function addRowsToTable(data, level) {
+            var rows = '';
+            data.forEach(function (item) {
+                rows += '<tr>';
+                rows += '<td style="padding-left: ' + (20 * level) + 'px;">' + item.Name;
+                rows += '<span class="action-buttons">';
+                rows += '<button class="edit-btn" data-id="' + item.Id + '">Düzenle</button>';
+                rows += '<button class="delete-btn" data-id="' + item.Id + '">Sil</button>';
+                rows += '</span></td>';
+                rows += '</tr>';
+
+                if (item.Children && item.Children.length > 0) {
+                    rows += addRowsToTable(item.Children, level + 1); // Recursive olarak eklenir
+                }
+            });
+            return rows;
+        }
+
+        // Tabloyu oluşturuyoruz
+        $(document).ready(function () {
+            var tableRows = addRowsToTable(organizations, 0);
+            $('#table-tree').append(tableRows); // Tüm satırları tek seferde ekliyoruz
+
+            // Tıklama olaylarını üst düzeyde dinle
+            $('#table-tree').on('click', '.edit-btn', function () {
+                console.log('Edit button clicked!'); // Kontrol amaçlı log
+                var id = $(this).data('id');
+                window.location.href = '/Organization/UpdateOrganization/' + id;
+            });
+
+            $('#table-tree').on('click', '.delete-btn', function () {
+                var id = $(this).data('id');
+                if (confirm('Bu organizasyonu silmek istediğinize emin misiniz?')) {
+                    window.location.href = '/Organization/Delete/' + id;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

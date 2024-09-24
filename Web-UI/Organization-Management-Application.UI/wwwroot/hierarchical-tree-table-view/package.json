@@ -1,0 +1,12 @@
+{
+  "name": "tree-table-with-jquery",
+  "version": "1.0.0",
+  "description": "table tree with jquery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["table tree", "jquery"],
+  "author": "summer",
+  "license": "ISC"
+}

@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Organization_Management_Application.UI</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Dashboard\assets\.DS_Store" />
+    <None Include="wwwroot\Dashboard\gulp-tasks\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\js\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\js\core\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\js\core\libraries\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\js\scripts\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\js\scripts\charts\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\js\scripts\charts\chartjs\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\js\scripts\pages\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\bootstrap-extended\.sass-cache\b161be96449978188ab92f1e37bbeda94f2952ce\buttons.scssc" />
+    <None Include="wwwroot\Dashboard\src\scss\components\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\core\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\core\layouts\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\core\menu\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\core\menu\menu-types\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\pages\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\plugins\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\plugins\charts\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\plugins\forms\.DS_Store" />
+    <None Include="wwwroot\Dashboard\src\scss\plugins\ui\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\fonts\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\fonts\flag-icon-css\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\images\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\images\backgrounds\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\images\portrait\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\js\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\js\scripts\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\vendors\.DS_Store" />
+    <None Include="wwwroot\Dashboard\theme-assets\vendors\css\.DS_Store" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.26" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
+  </ItemGroup>
+
+</Project>
