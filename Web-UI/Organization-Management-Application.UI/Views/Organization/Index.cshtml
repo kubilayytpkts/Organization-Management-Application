@@ -3,68 +3,44 @@
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<link href="~/hierarchical-tree-table-view/css/tree-table.css" rel="stylesheet" />
 <!doctype html>
 <html>
+
 <head>
     <link rel="stylesheet" href="~/hierarchical-tree-table-view/css/tree-table.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link href="~/css/table.css" rel="stylesheet" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <style>
-        html, * {
-            font-family: 'Open Sans';
-            font-size: 16px;
+        .add-organization-btn {
+            position: absolute;
+            bottom: 10px; /* Aşağı sola alındı */
+            left: 10px; /* Aşağı sola alındı */
+            z-index: 1000;
         }
 
-        .container {
-            margin: 10px auto;
-            max-width: 180%;
-            margin-left: 30px;
-        }
-
-        th, td {
-            padding: 15px;
-            position: relative; /* Butonları sağa kaydırmak için */
-        }
-
-        .tree-table th {
-            text-align: left;
-            font-size: 18px;
-        }
-
-        .action-buttons {
-            position: absolute; /* Konumlandırmayı değiştirdik */
-            right: 10px; /* Sağ kenardan 10px uzaklık */
-            top: 50%; /* Yükseklik ortalaması */
-            transform: translateY(-50%); /* Dikey merkezleme */
-            z-index: 10; /* Diğer elementlerin üstünde olmasını sağlar */
-        }
-
-            .action-buttons button {
-                font-size: 14px;
-                padding: 5px 10px;
-                margin-left: 5px; /* Butonlar arasındaki boşluk */
-                border: none;
-                cursor: pointer;
-                color: white;
-            }
-
-        .edit-btn {
-            background-color: #007bff;
-        }
-
-        .delete-btn {
-            background-color: #dc3545;
+        .employees-btn {
+            background-color: #28a745; /* Yeşil arka plan rengi */
+            color: white; /* Beyaz yazı rengi */
+            padding: 5px 10px; /* İç boşluk ayarları */
+            border: none; /* Kenarlık olmaması */
+            border-radius: 3px; /* Hafif yuvarlak kenarlar */
+            cursor: pointer; /* Fare imleci butonun üstüne geldiğinde göster */
         }
     </style>
 </head>
+
 <body>
     <div class="container">
+        <!-- Organizasyon Ekle butonu -->
+        <a href="@Url.Action("CreateOrganization", "Organization")" class="btn btn-success add-organization-btn">Organizasyon Ekle</a>
+
         <div class="tree-table-wrap">
             <table class="tree-table" style="width: 100%;">
                 <thead>
-                    <tr>
-                        <th>Departman Hiyerarşisi</th>
+                    <tr style="text-align:center;">
+                        <th>Organizasyon Hiyerarşi Yapısı</th>
                     </tr>
                 </thead>
                 <tbody id="table-tree">
@@ -72,36 +48,35 @@
             </table>
         </div>
     </div>
+
     <script>
         var organizations = @Html.Raw(ViewBag.OrganizationsTree);
 
-        // Hiyerarşiyi tabloya ekleyen fonksiyon
         function addRowsToTable(data, level) {
             var rows = '';
             data.forEach(function (item) {
+                console.log(item); // Her bir öğeyi kontrol etmek için
                 rows += '<tr>';
                 rows += '<td style="padding-left: ' + (20 * level) + 'px;">' + item.Name;
                 rows += '<span class="action-buttons">';
                 rows += '<button class="edit-btn" data-id="' + item.Id + '">Düzenle</button>';
                 rows += '<button class="delete-btn" data-id="' + item.Id + '">Sil</button>';
+                rows += '<button class="employees-btn" data-id="' + item.Id + '">Personel Listesi</button>'; // Yeni Görevliler butonu
                 rows += '</span></td>';
                 rows += '</tr>';
 
                 if (item.Children && item.Children.length > 0) {
-                    rows += addRowsToTable(item.Children, level + 1); // Recursive olarak eklenir
+                    rows += addRowsToTable(item.Children, level + 1);
                 }
             });
             return rows;
         }
 
-        // Tabloyu oluşturuyoruz
         $(document).ready(function () {
             var tableRows = addRowsToTable(organizations, 0);
-            $('#table-tree').append(tableRows); // Tüm satırları tek seferde ekliyoruz
+            $('#table-tree').append(tableRows);
 
-            // Tıklama olaylarını üst düzeyde dinle
             $('#table-tree').on('click', '.edit-btn', function () {
-                console.log('Edit button clicked!'); // Kontrol amaçlı log
                 var id = $(this).data('id');
                 window.location.href = '/Organization/UpdateOrganization/' + id;
             });
@@ -109,10 +84,42 @@
             $('#table-tree').on('click', '.delete-btn', function () {
                 var id = $(this).data('id');
                 if (confirm('Bu organizasyonu silmek istediğinize emin misiniz?')) {
-                    window.location.href = '/Organization/Delete/' + id;
+                    $.ajax({
+                        url: '/Organization/DeleteOrganization/' + id,
+                        type: 'POST',
+                        success: function (response) {
+                            if (response.success === true) {
+                                swal({
+                                    title: "İşlem Başarılı!",
+                                    text: "Değişiklikler için sayfa yenileniyor!",
+                                    icon: "success",
+                                    button: "Tamam",
+                                }).then(() => {
+                                    window.location.href = "/Organization/Index";
+                                });
+                            } else {
+                                swal({
+                                    title: "Silme İşlemi Başarısız!",
+                                    text: "Bu organizasyonu silemezsiniz. Bağlı personeller veya alt organizasyonlar olabilir.",
+                                    icon: "error",
+                                    button: "Tamam",
+                                });
+                            }
+                        },
+                        error: function () {
+                            alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                        }
+                    });
                 }
+            });
+
+            $('#table-tree').on('click', '.employees-btn', function () { 
+                var id = $(this).data('id');
+                console.log(id); 
+                window.location.href = '/Employee/GetEmployeesByOrganizationId/' + id; 
             });
         });
     </script>
 </body>
+
 </html>

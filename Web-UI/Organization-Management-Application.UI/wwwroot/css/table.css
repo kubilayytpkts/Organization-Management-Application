@@ -1,0 +1,49 @@
+﻿body {
+    html, *
+
+{
+    font-family: 'Segoe UI', sans-serif; /* Fontu burada değiştiriyoruz */
+    font-size: 16px;
+}
+
+.container {
+    margin: 10px auto;
+    max-width: 180%;
+    margin-left: 30px;
+}
+
+th, td {
+    padding: 15px;
+    position: relative; /* Butonları sağa kaydırmak için */
+}
+
+.tree-table th {
+    text-align: left;
+    font-size: 18px;
+}
+
+.action-buttons {
+    position: absolute; /* Konumlandırmayı değiştirdik */
+    right: 10px; /* Sağ kenardan 10px uzaklık */
+    top: 50%; /* Yükseklik ortalaması */
+    transform: translateY(-50%); /* Dikey merkezleme */
+    z-index: 10; /* Diğer elementlerin üstünde olmasını sağlar */
+}
+
+    .action-buttons button {
+        font-size: 14px;
+        padding: 5px 10px;
+        margin-left: 5px; /* Butonlar arasındaki boşluk */
+        border: none;
+        cursor: pointer;
+        color: white;
+    }
+
+.edit-btn {
+    background-color: #007bff;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+}

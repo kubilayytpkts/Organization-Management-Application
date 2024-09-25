@@ -3,6 +3,8 @@ using Organization_Management.Api.Dtos.OrganizationDtos;
 using Dapper;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Organization_Management.Api.Entites;
+using Microsoft.AspNetCore.Http.Metadata;
+using Organization_Management.Api.Dtos.EmployeeDtos;
 
 
 namespace Organization_Management.Api.Services.Organizations
@@ -29,13 +31,17 @@ namespace Organization_Management.Api.Services.Organizations
 
         public async Task<bool> DeleteOrganizationAsync(int id)
         {
-            using (var connection = _dapperContext.CreateConnection())
+            if(await DeleteOrganizationControlAsync(id))
             {
-                string sql = "DELETE FROM Organization WHERE OrganizationId=@Id";
-                var result = await connection.ExecuteAsync(sql, new { Id = id });
+                using (var connection = _dapperContext.CreateConnection())
+                {
+                    string sql = "DELETE FROM Organization WHERE OrganizationId=@Id";
+                    var result = await connection.ExecuteAsync(sql, new { Id = id });
 
-                return result == 1;
+                    return result == 1;
+                }
             }
+            return false;
         }
 
         public async Task<IEnumerable<ResultOrganizationDto>> GetAllOrganizationsAsync()
@@ -71,6 +77,24 @@ namespace Organization_Management.Api.Services.Organizations
 
                 return result == 1;
             }
+        }
+
+        private async Task<bool> DeleteOrganizationControlAsync(int organizationId)
+        {
+            bool flag = true;
+            using (var connection = _dapperContext.CreateConnection())
+            {
+                string organizationSql = "SELECT * FROM Organization WHERE ParentOrganizationId = @ParentOrganizationId";
+                var resultOrganizations = await connection.QuerySingleOrDefaultAsync<ResultOrganizationDto>(organizationSql, new { ParentOrganizationId = organizationId });
+
+                string employeeSql = "SELECT * FROM Employee WHERE OrganizationId = @OrganizationId";
+                var resultEmployees = await connection.QuerySingleOrDefaultAsync<ResultEmployeeDto>(employeeSql, new { OrganizationId = organizationId });
+
+                if (resultOrganizations != null || resultEmployees != null)
+                    flag = false; // If there is an organization or employee relationship you cannot delete it.
+            }
+
+            return flag;
         }
     }
 }

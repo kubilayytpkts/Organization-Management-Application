@@ -32,7 +32,7 @@ namespace Organization_Management.Api.Controllers
             return result == true ? NoContent() : BadRequest(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{OrganizationId}")]
         public async Task<IActionResult> DeleteOrganization(int OrganizationId)
         {
             var result = await _organizationRepository.DeleteOrganizationAsync(OrganizationId);

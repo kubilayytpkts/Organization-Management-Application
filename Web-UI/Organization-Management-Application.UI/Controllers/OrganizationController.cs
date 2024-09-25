@@ -8,18 +8,17 @@ namespace Organization_Management_Application.UI.Controllers
 {
     public class OrganizationController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly HttpClient client;
-        public OrganizationController(IHttpClientFactory httpClientFactory)
+        public OrganizationController(IHttpClientFactory _httpClientFactory)
         {
-            _httpClientFactory = httpClientFactory;
             client = _httpClientFactory.CreateClient();
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var responseOrganizations =await client.GetAsync("https://localhost:7000/api/Organization");
-            if(responseOrganizations.IsSuccessStatusCode)
+            var responseOrganizations = await client.GetAsync("https://localhost:7000/api/Organization");
+            if (responseOrganizations.IsSuccessStatusCode)
             {
                 var jsonOrganizations = await responseOrganizations.Content.ReadAsStringAsync();
                 var organizations = JsonConvert.DeserializeObject<List<ResultOrganizationDto>>(jsonOrganizations);
@@ -40,35 +39,79 @@ namespace Organization_Management_Application.UI.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> CreateOrganization()
+        {
+            //Default value 1 
+            ViewBag.Organizations = await Get_OrganizationsSelectList(1);
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateOrganization(CreateOrganizationDto organizationDto)
+        {
+            bool flag = false;
+            var responseCreateOrganization = await client.PostAsJsonAsync("https://localhost:7000/api/Organization", organizationDto);
+            if(responseCreateOrganization.IsSuccessStatusCode)
+                flag = true;
+
+            return Json(new { success = flag });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> UpdateOrganization(int id)
         {
-            var resonseGetByIdOrganization =await client.GetAsync($"https://localhost:7000/api/Organization/{id}");
-            if(resonseGetByIdOrganization.IsSuccessStatusCode)
+            var resonseGetByIdOrganization = await client.GetAsync($"https://localhost:7000/api/Organization/{id}");
+            if (resonseGetByIdOrganization.IsSuccessStatusCode)
             {
-                var jsonData =await resonseGetByIdOrganization.Content.ReadAsStringAsync();
+                var jsonData = await resonseGetByIdOrganization.Content.ReadAsStringAsync();
                 var deserializeData = JsonConvert.DeserializeObject<ResultOrganizationDto>(jsonData);
 
-                ViewBag.Organizations =await Get_OrganizationsSelectList(deserializeData.OrganizationId);
+                ViewBag.Organizations = await Get_OrganizationsSelectList(deserializeData.ParentOrganizationId);
 
                 return View(deserializeData);
             }
             return View();
         }
 
-        private async Task<List<SelectListItem>> Get_OrganizationsSelectList(int organizationId)
+        [HttpPut]
+        public async Task<IActionResult> UpdateOrganization(UpdateOrganizationDto organizationDto)
         {
-            var selectList = (from x in await Get_OrganizationsAsync()
-                              select new SelectListItem
-                              {
-                                  Value=x.OrganizationId.ToString(),
-                                  Text=x.OrganizationName,
-                                  Selected = organizationId == x.OrganizationId
-                              }).ToList();
+            bool flag = false;
+            var responseUpdateOrganization = await client.PutAsJsonAsync("https://localhost:7000/api/Organization", organizationDto);
+            if (responseUpdateOrganization.IsSuccessStatusCode)
+            {
+                flag = true;
+            }
+            return Json(new { success = flag });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteOrganization(int id)
+        {
+            bool flag = false;
+            var responseDeleteOrganization =await client.DeleteAsync($"https://localhost:7000/api/Organization/{id}/");
+            if(responseDeleteOrganization.IsSuccessStatusCode)
+            {
+                flag = true;
+            }
+            return Json(new { success = flag });
+        }
+
+        //HELPER METHODS
+        private async Task<List<SelectListItem>> Get_OrganizationsSelectList(int? parentOrganizationId)
+        {
+            var organizations = await Get_OrganizationsAsync();
+
+            var selectList = organizations.Select(x => new SelectListItem
+            {
+                Value = x.OrganizationId.ToString(),
+                Text = x.OrganizationName,
+                Selected = x.ParentOrganizationId == parentOrganizationId
+            }).ToList();
 
             return selectList;
         }
-
         private async Task<List<ResultOrganizationDto>> Get_OrganizationsAsync()
         {
             var response = await client.GetAsync("https://localhost:7000/api/Organization");
@@ -81,8 +124,6 @@ namespace Organization_Management_Application.UI.Controllers
             }
             return null;
         }
-
-        //HELPER METHOD
         private List<TreeModel> GetChildren(List<ResultOrganizationDto> allOrganizations, int parentId)
         {
             return allOrganizations

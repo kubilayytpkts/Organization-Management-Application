@@ -8,7 +8,7 @@ namespace Organization_Management.Api.Concrete.EfDbContext
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
 
-        public EfContext(IConfiguration configuration, string connectionString)
+        public EfContext(IConfiguration configuration)
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -19,7 +19,7 @@ namespace Organization_Management.Api.Concrete.EfDbContext
             optionsBuilder.UseSqlServer(_connectionString);
         }
 
-        public DbSet<Personel> personels { get; set; }
-        public DbSet<Organization> organizations { get; set; }
+        public DbSet<Employee> Employee { get; set; }
+        public DbSet<Organization> Organization { get; set; }
     }
 }

@@ -7,7 +7,7 @@
         public int? ParentOrganizationId { get; set; } // Üst organizasyonun ID'si (opsiyonel)
 
         // Navigation properties
-        public virtual ICollection<Personel> Personels { get; set; } // Organizasyona bağlı personeller
+        public virtual ICollection<Employee> Personels { get; set; } // Organizasyona bağlı personeller
         public virtual Organization ParentOrganization { get; set; } // Üst organizasyon
         public virtual ICollection<Organization> SubOrganizations { get; set; } // Alt organizasyonlar
     }

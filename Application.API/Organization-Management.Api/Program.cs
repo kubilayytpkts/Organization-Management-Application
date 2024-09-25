@@ -1,11 +1,24 @@
+using Employee_Management.Api.Services.Employees;
+using Microsoft.EntityFrameworkCore;
 using Organization_Management.Api.Concrete.Dapper;
+using Organization_Management.Api.Concrete.EfDbContext;
+using Organization_Management.Api.Services.Employees;
 using Organization_Management.Api.Services.Organizations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddHttpClient();
 
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddSingleton<EfContext>();
+
+// EfContext'i Scoped olarak ekleyin ve connection string'i kullanýn.
 builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 // Add services to the container.
 

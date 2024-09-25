@@ -1,0 +1,85 @@
+﻿@using Organization_Management_Application.UI.Dtos.EmployeeDtos
+@model List<ResultEmployeesWithOrganizationsDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<style>
+    .btn {
+        position: relative;
+        z-index: 1; /* Butonun üstte görünmesini sağla */
+    }
+</style>
+
+<div class="card-content collapse show">
+    <div class="card-body" style="text-align:center;">
+        <h3>- Organizasyon Personel Listesi -</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">İsim</th>
+                    <th scope="col">Soyisim</th>
+                    <th scope="col">Sicil No</th>
+                    <th scope="col">Organizasyon</th>
+                    <th scope="col">Düzenle / Sil</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                        <td>@item.EmployeeNumber</td>
+                        <td>@item.Organization.OrganizationName</td>
+                        <td>
+                            <a href="/Employee/UpdateEmployee/@item.EmployeeId" class="btn btn-primary">Düzenle</a>
+                            <button type="button" onclick="deleteEmployee(@item.EmployeeId)" class="btn btn-danger">Sil</button> <!-- Sil butonuna tıklanınca deleteEmployee fonksiyonu çağrılacak -->
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <a href="/Employee/AddEmployee/" class="btn btn-success" style="float:left;"> Personel Ekle</a>
+
+</div>
+
+
+<script>
+    function deleteEmployee(employeeId) {
+        if (!confirm("Bu çalışanı silmek istediğinize emin misiniz?")) {
+            return;
+        }
+
+        $.ajax({
+            url: "/Employee/DeleteEmployee",
+            type: "POST",
+            data: { id: employeeId },
+            success: function (response) {
+                if (response.success) {
+                    swal({
+                        title: "İşlem Başarılı!",
+                        text: "Çalışan başarıyla silindi.",
+                        icon: "success",
+                        button: "Tamam",
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    swal({
+                        title: "İşlem Başarısız!",
+                        text: "Silme işlemi gerçekleştirilemedi.",
+                        icon: "error",
+                        button: "Tamam",
+                    });
+                }
+            }
+        });
+    }
+</script>

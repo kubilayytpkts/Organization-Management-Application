@@ -1,8 +1,6 @@
-﻿@using Organization_Management_Application.UI.Dtos.OrganizationDtos
-@model ResultOrganizationDto
-
+﻿
 @{
-    ViewData["Title"] = "UpdateOrganization";
+    ViewData["Title"] = "AddOrganization";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
@@ -17,21 +15,22 @@
     }
 </style>
 
+<br />
 <div class="container">
     <form id="organizationForm" onsubmit="updateOrganization(event)" method="post">
         <div class="form-group">
             <label for="OrganizationName">Organizasyon Adı</label>
-            <input type="hidden" value="@Model.OrganizationId" name="OrganizationId" />
-            <input type="text" class="form-control" name="OrganizationName" value="@Model.OrganizationName" required />
+            <input type="text" class="form-control" name="OrganizationName" required />
         </div>
 
         <div class="form-group">
             <label>Bağlı olunan organizasyon</label>
             <select class="form-control" name="ParentOrganizationId" required>
+                <option value="null" name="ParentOrganizationId">Boş</option>
                 @foreach (var organization in ViewBag.Organizations)
                 {
                     <option value="@organization.Value"
-                    @(organization.Value == Model.ParentOrganizationId.ToString() ? "selected" : "")>
+                    @(organization.Value == 1.ToString() ? "selected" : "")>
                         @organization.Text
                     </option>
                 }
@@ -49,8 +48,8 @@
         var formData = new FormData($("#organizationForm")[0]);
 
         $.ajax({
-            url: "/Organization/UpdateOrganization",
-            type: "PUT",
+            url: "/Organization/CreateOrganization",
+            type: "POST",
             data: formData,
             contentType: false,
             processData: false,
@@ -62,13 +61,14 @@
                         icon: "success",
                         button: "Tamam",
                     }).then(() => {
-                       
+
                         window.location.href = "/Organization/Index";
                     });
                 }
                 else {
                     swal({
                         title: "İşlem Başarısız",
+                        text:"Organizasyon ekleme başarısız.Eklemek istediğiniz ad kullanılıyor olabilir !",
                         icon: "error",
                         button: "tamam",
                     });
@@ -77,3 +77,4 @@
         });
     }
 </script>
+

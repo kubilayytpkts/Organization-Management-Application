@@ -23,10 +23,8 @@
 <body class="vertical-layout vertical-menu 2-columns   menu-expanded fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
     <!-- fixed-top-->
-    @await Html.PartialAsync("Partial/_NavbarPartial")
     <!-- ////////////////////////////////////////////////////////////////////////////-->
-
-
+    @await Html.PartialAsync("Partial/_NavbarPartial")
    @await Html.PartialAsync("Partial/_SidebarPartial")
     <div class="app-content content">
         <div class="content-wrapper">
@@ -38,8 +36,6 @@
             </div>
         </div>
     </div>
-      @await Html.PartialAsync("Partial/_FooterPartial")
-
     <!-- BEGIN VENDOR JS-->
     <script src="~/Dashboard/theme-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
     <!-- BEGIN VENDOR JS-->
