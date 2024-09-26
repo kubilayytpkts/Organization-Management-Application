@@ -11,6 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web-UI", "Web-UI", "{B108C6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organization-Management-Application.UI", "Web-UI\Organization-Management-Application.UI\Organization-Management-Application.UI.csproj", "{CC10F98E-64FD-41D6-9B45-ADC62A4F01A1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{FC302EF1-C0B5-4EE2-B893-57368F7A4B10}"
+	ProjectSection(SolutionItems) = preProject
+		Database\OrganizationManagementDB.bak = Database\OrganizationManagementDB.bak
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
