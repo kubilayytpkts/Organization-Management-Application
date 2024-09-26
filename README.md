@@ -1,3 +1,7 @@
+************PROJE KURULUMU İÇİN**************
+gerekli veritabanı dosyaları proje içerisinde bulunmaktadır 
+
+
 ![organizasyon-1](https://github.com/user-attachments/assets/b827dbf1-9591-474b-827e-c9b5b8c76a48)
 ![organizasyon-2](https://github.com/user-attachments/assets/46c07abf-7f4f-44bd-bba0-9f71df2ecd91)
 ![organizasyon-3](https://github.com/user-attachments/assets/414537ec-357a-4f0c-b8d8-09f825ecb221)
