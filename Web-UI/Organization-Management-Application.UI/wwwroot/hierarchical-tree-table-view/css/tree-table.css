@@ -160,3 +160,18 @@ th, td {
 .delete-btn {
     background-color: #dc3545;
 }
+.add-organization-btn {
+    position: absolute;
+    bottom: 10px; /* Aþaðý sola alýndý */
+    left: 10px; /* Aþaðý sola alýndý */
+    z-index: 1000;
+}
+
+.employees-btn {
+    background-color: #28a745; /* Yeþil arka plan rengi */
+    color: white; /* Beyaz yazý rengi */
+    padding: 5px 10px; /* Ýç boþluk ayarlarý */
+    border: none; /* Kenarlýk olmamasý */
+    border-radius: 3px; /* Hafif yuvarlak kenarlar */
+    cursor: pointer; /* Fare imleci butonun üstüne geldiðinde göster */
+}

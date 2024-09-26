@@ -25,11 +25,15 @@ namespace Organization_Management.Api.Services.Employees
 
         public async Task<bool> CreateEmployeeAsync(CreateEmployeeDto employeeDto)
         {
-            var mappedEmployee = _mapper.Map<Employee>(employeeDto);
-            await _efContext.Set<Employee>().AddAsync(mappedEmployee);
+            if(await ValidateNewEmployeeNumber(employeeDto.EmployeeNumber))
+            {
+                var mappedEmployee = _mapper.Map<Employee>(employeeDto);
+                await _efContext.Set<Employee>().AddAsync(mappedEmployee);
 
-            var result = await _efContext.SaveChangesAsync();
-            return result > 0;
+                var result = await _efContext.SaveChangesAsync();
+                return result > 0;
+            }
+            return false;
         }
 
         public async Task<bool> DeleteEmployeeAsync(int id)
@@ -114,6 +118,14 @@ namespace Organization_Management.Api.Services.Employees
             var result = await _efContext.SaveChangesAsync();
 
             return result > 0;
+        }
+
+        private async Task<bool> ValidateNewEmployeeNumber(int employeeNumber)
+        {
+            var employees =await _efContext.Employee.FirstOrDefaultAsync(x => x.EmployeeNumber == employeeNumber);
+            //If the new employee number is registered, we cannot register it.
+
+            return employees == null;
         }
     }
 }

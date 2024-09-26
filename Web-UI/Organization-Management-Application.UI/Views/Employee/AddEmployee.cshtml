@@ -1,36 +1,38 @@
-﻿
+﻿@using Organization_Management_Application.UI.Dtos.EmployeeDtos
+@model CreateEmployeeDto
+
 @{
-    ViewData["Title"] = "AddOrganization";
+    ViewData["Title"] = "AddEmployee";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
 <link href="~/css/form.css" rel="stylesheet" />
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-
 <style>
     .container {
-        position: relative; 
-        z-index: 1; 
+        position: relative; /* veya absolute */
+        z-index: 1; /* Diğer elementlerin altında kalmaması için */
     }
 </style>
 
 <br />
 <div class="container">
-    <form id="organizationForm" onsubmit="createOrganization(event)" method="post">
+    <form id="EmployeeForm" onsubmit="addEmployee(event)" method="post">
         <div class="form-group">
-            <label for="OrganizationName">Organizasyon Adı</label>
-            <input type="text" class="form-control" name="OrganizationName" required />
+            <label>İsim</label>
+            <input type="hidden" name="EmployeeId" />
+            <input type="text" class="form-control" name="FirstName" required />
+            <label>Soyisim</label>
+            <input type="text" class="form-control" name="LastName" required />
+            <label>Sicil No</label>
+            <input type="number" class="form-control" name="EmployeeNumber"  required />
         </div>
-
         <div class="form-group">
             <label>Bağlı olunan organizasyon</label>
-            <select class="form-control" name="ParentOrganizationId" required>
-                <option value="null" name="ParentOrganizationId">Boş</option>
+            <select class="form-control" name="OrganizationId" required>
                 @foreach (var organization in ViewBag.Organizations)
                 {
-                    <option value="@organization.Value"
-                    @(organization.Value == 1.ToString() ? "selected" : "")>
+                    <option value="@organization.Value">
                         @organization.Text
                     </option>
                 }
@@ -42,13 +44,13 @@
 </div>
 
 <script>
-    function createOrganization(event) {
+    function addEmployee(event) {
         event.preventDefault();
 
-        var formData = new FormData($("#organizationForm")[0]);
+        var formData = new FormData($("#EmployeeForm")[0]);
 
         $.ajax({
-            url: "/Organization/CreateOrganization",
+            url: "/Employee/AddEmployee",
             type: "POST",
             data: formData,
             contentType: false,
@@ -62,13 +64,13 @@
                         button: "Tamam",
                     }).then(() => {
 
-                        window.location.href = "/Organization/Index";
+                        window.location.href = "/Employee/Index";
                     });
                 }
                 else {
                     swal({
                         title: "İşlem Başarısız",
-                        text:"Organizasyon ekleme başarısız.Eklemek istediğiniz ad kullanılıyor olabilir !",
+                        text:"alanları kontrol ediniz ve sicil numarasının başka bir personelde kullanılmadıgından emın olunuz ! ",
                         icon: "error",
                         button: "tamam",
                     });
@@ -77,4 +79,3 @@
         });
     }
 </script>
-

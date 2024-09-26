@@ -1,49 +1,50 @@
-﻿body {
-    html, *
-
-{
+﻿body, html, * {
     font-family: 'Segoe UI', sans-serif; /* Fontu burada değiştiriyoruz */
-    font-size: 16px;
+    font-size: 16px; /* Varsayılan font boyutu */
+    font-weight: normal; /* Varsayılan yazı kalınlığı */
 }
 
 .container {
     margin: 10px auto;
-    max-width: 180%;
-    margin-left: 30px;
-}
-
-th, td {
-    padding: 15px;
-    position: relative; /* Butonları sağa kaydırmak için */
+    max-width: 100%; /* Maksimum genişlik %100 */
+    margin-left: 30px; /* Sol taraftan 30px boşluk */
 }
 
 .tree-table th {
-    text-align: left;
-    font-size: 18px;
+    text-align: left; /* Başlık hücrelerinin sola hizalanması */
+    font-size: 18px; /* Başlık yazı boyutu */
+}
+
+th, td {
+    padding: 15px; /* Hücrelerin iç boşlukları */
+    position: relative; /* Butonların konumlandırılması için */
+    text-align: left; /* Hücre metinlerinin sola hizalanması */
 }
 
 .action-buttons {
     position: absolute; /* Konumlandırmayı değiştirdik */
     right: 10px; /* Sağ kenardan 10px uzaklık */
-    top: 50%; /* Yükseklik ortalaması */
-    transform: translateY(-50%); /* Dikey merkezleme */
+    top: 25px; /* Üstten 10px uzaklık yaparak butonları biraz yukarı alıyoruz */
     z-index: 10; /* Diğer elementlerin üstünde olmasını sağlar */
 }
 
     .action-buttons button {
-        font-size: 14px;
-        padding: 5px 10px;
+        font-size: 14px; /* Buton yazı boyutu */
+        padding: 5px 10px; /* Buton iç boşlukları */
         margin-left: 5px; /* Butonlar arasındaki boşluk */
-        border: none;
-        cursor: pointer;
-        color: white;
+        border: none; /* Kenarlık olmaması */
+        cursor: pointer; /* Fare imleci butonun üstüne geldiğinde göster */
+        color: white; /* Yazı rengi beyaz */
     }
 
 .edit-btn {
-    background-color: #007bff;
+    background-color: #007bff; /* Düzenleme butonu için arka plan rengi */
 }
 
 .delete-btn {
-    background-color: #dc3545;
+    background-color: #dc3545; /* Silme butonu için arka plan rengi */
 }
+
+.employees-btn {
+    background-color: #28a745; /* Personel listesi butonu için arka plan rengi */
 }

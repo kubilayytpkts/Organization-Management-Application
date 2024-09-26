@@ -30,16 +30,22 @@ namespace Organization_Management_Application.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddEmployee()
+        public async  Task<IActionResult> AddEmployee()
         {
+            ViewBag.Organizations = await GetOrganizationsSelectedListAsync(1);
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> AddEmployee(CreateEmployeeDto employeeDto)
         {
-            var resultAddEmployee
-            return View();
+            bool flag = false;
+
+            var resultAddEmployee =await client.PostAsJsonAsync("https://localhost:7000/api/Employee", employeeDto);
+            if (resultAddEmployee.IsSuccessStatusCode)
+                flag = true;
+
+            return Json(new { success =flag});
         }
 
         [HttpGet]
@@ -65,7 +71,7 @@ namespace Organization_Management_Application.UI.Controllers
                 var jsonEmployee = await resultEmployee.Content.ReadAsStringAsync();
                 var deserializeEmploye = JsonConvert.DeserializeObject<ResultEmployeeDto>(jsonEmployee);
 
-                ViewBag.Organizations = await GetOrganizationsSelectedList(deserializeEmploye.OrganizationId);
+                ViewBag.Organizations = await GetOrganizationsSelectedListAsync(deserializeEmploye.OrganizationId);
                 return View(deserializeEmploye);
             }
             return View();
@@ -94,9 +100,8 @@ namespace Organization_Management_Application.UI.Controllers
         }
 
 
-
         //HELPER METHOD
-        private async Task<List<SelectListItem>> GetOrganizationsSelectedList(int organizationId)
+        private async Task<List<SelectListItem>> GetOrganizationsSelectedListAsync(int? organizationId)
         {
             var resultOrganizations = await client.GetAsync("https://localhost:7000/api/Organization");
             var jsonOrganizations = await resultOrganizations.Content.ReadAsStringAsync();

@@ -48,13 +48,6 @@ namespace Organization_Management.Api.Controllers
             return result != null ? Ok(result) : NotFound();
         }
 
-        //[HttpGet("GetOrganizationsByCategoryId/{categoryId}")]
-        //public async Task<IActionResult> GetOrganizationsByCategoryId(int categoryId)
-        //{
-        //    var resultOrganizationList = await _organizationRepository.GetOrganizationsByCategoryId(categoryId);
-        //    return Ok(resultOrganizationList);
-        //}
-
         [HttpGet]
         public async Task<IActionResult> GetAllOrganization()
         {
@@ -63,11 +56,5 @@ namespace Organization_Management.Api.Controllers
             return result != null ? Ok(result) : BadRequest("İşlem başarısız");
         }
 
-        //[HttpGet("GetOrganizationsWithCategory")]
-        //public async Task<IActionResult> GetOrganizationsWithCategory()
-        //{
-        //    var resultOrganizationsWithCaregory = await _organizationRepository.GetOrganizationsWithCategory();
-        //    return Ok(resultOrganizationsWithCaregory);
-        //}
     }
 }

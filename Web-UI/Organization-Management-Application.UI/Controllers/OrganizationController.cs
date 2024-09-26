@@ -98,7 +98,7 @@ namespace Organization_Management_Application.UI.Controllers
             return Json(new { success = flag });
         }
 
-        //HELPER METHODS
+        //HELPERS METHODS
         private async Task<List<SelectListItem>> Get_OrganizationsSelectList(int? parentOrganizationId)
         {
             var organizations = await Get_OrganizationsAsync();
