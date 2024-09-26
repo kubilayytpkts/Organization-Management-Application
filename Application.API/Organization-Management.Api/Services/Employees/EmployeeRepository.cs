@@ -108,9 +108,12 @@ namespace Organization_Management.Api.Services.Employees
         {
             var existingEmployee = await _efContext.Employee.FindAsync(employeeDto.EmployeeId);
 
-            if (existingEmployee == null)
-            {
+            //the new employee number cannot be registered if another employee already has it 
+            var otherEmployeeByNumber = await _efContext.Employee.Where(x => x.EmployeeId != existingEmployee.EmployeeId
+                                         && x.EmployeeNumber == employeeDto.EmployeeNumber).FirstOrDefaultAsync();
 
+            if (existingEmployee == null || otherEmployeeByNumber != null)
+            {
                 return false;
             }
 
